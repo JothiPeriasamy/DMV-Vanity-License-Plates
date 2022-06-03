@@ -23,7 +23,7 @@ if __name__=='__main__':
         
         
     except BaseException as e:
-        col1, col2, col3 = st.columns([1.15,7.1,1.15])
+        col1, col2, col3 = st.columns([1.5,11,1.5])
         with col2:
             st.write('')
             st.error('In Error block - '+str(e))

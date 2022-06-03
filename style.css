@@ -190,10 +190,10 @@ margin: -0.5rem 5rem 5rem 1rem;
 
 .css-po3vlj {
     display: flex;
-    width: 645px;
+    width: 100%;
     -webkit-box-align: center;
     align-items: center;
-    padding: 1rem;
+    padding: 10px 5px 14px 12px;
     background-color: rgb(240, 242, 246);
     border-radius: 0.25rem;
     color: rgb(49, 51, 63);
@@ -202,7 +202,7 @@ margin: -0.5rem 5rem 5rem 1rem;
 .css-fis6aj {
     left: 38px;
     right: -3px;
-    width: 645px;
+    width: 100%;
     line-height: 1.25;
     padding-top: 0.75rem;
     padding-left: 1rem;
@@ -253,3 +253,34 @@ margin: -0.5rem 5rem 5rem 1rem;
  width: 100%;   
 padding: 0rem 0rem 2rem 0rem;
 }
+
+/* 
+#root > div:nth-child(1) > div > div > div > div > section.main.css-1v3fvcr.eknhn3m1 > div > div:nth-child(1) > div > div:nth-child(7) > div.css-1561vp7.e1tzin5v2 > div:nth-child(1) > div > div:nth-child(2) > div > button{
+    width: 100%;
+    text-align: center;
+    margin: 0px 0px 0px -504px;
+}
+
+#root > div:nth-child(1) > div > div > div > div > section.main.css-1v3fvcr.eknhn3m1 > div > div:nth-child(1) > div > div:nth-child(7) > div.css-1561vp7.e1tzin5v2 > div:nth-child(1) > div > div:nth-child(2) > div{
+       width: 100%;
+    text-align: center;
+    margin: 0px 0px 0px -504px;
+}
+
+.css-ns78wr {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-weight: 400;
+    padding: 0.75rem 17.75rem 1rem 15rem;
+    border-radius: 0.25rem;
+    margin: 0px;
+    line-height: 1.6;
+    color: inherit;
+    width: auto;
+    user-select: none;
+    background-color: green;
+    border: 1px solid rgba(49, 51, 63, 0.2);
+} */
