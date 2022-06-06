@@ -18,7 +18,7 @@ def CSS_Property(file_name):
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 def All_Initialization():
-    image = Image.open('DMV_Logo.png')
+    image = Image.open('Utility/DMV_UT_Logo.png')
     st.image(image)
     st.markdown("<h1 style='text-align: center; color: black; font-size:25px;'>DMV - API Client for Vanity License Plate Analyzer</h1>", unsafe_allow_html=True)
     st.markdown("""

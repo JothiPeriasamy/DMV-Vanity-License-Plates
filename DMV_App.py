@@ -4,17 +4,18 @@ import json
 import traceback
 import sys
 from PIL import Image
-from DSAI_Utility import All_Initialization,CSS_Property
-from DSAI_DMV_API import API_Validation
+
+from Utility.DMV_UT_Streamlit import All_Initialization,CSS_Property
+from User_Interface.DMV_API import API_Validation
 
 if __name__=='__main__':
     
     
-    img = Image.open('DMV_Logo.png')
+    img = Image.open('Utility/DMV_UT_Logo.png')
     st.set_page_config(page_title="DMV Vanity Plate Analyzer", layout="wide",page_icon=img)
     try:
         # Applying CSS properties for web page
-        CSS_Property("style.css")
+        CSS_Property("Utility/DMV_UT_Style.css")
         # Initializing Basic Componentes of Web Page
         All_Initialization()
         

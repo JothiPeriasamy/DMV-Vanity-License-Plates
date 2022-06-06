@@ -2,8 +2,8 @@
 
 Client Code, which takes user request as API payload and returns the response from Backend server.
 
-Dockerfile - Has the docker environment configurations  
-requirements.txt - Has the conda environment libraries  
-DSAI_App.py - Entry point of the file, which has main method   
-DSAI_DMV_API.py - This has the api request and response processing implementation  
-DSAI_Utility.py - This has the utility methods for UI
+Application - Has the cloud function files  
+Model_Engineering - Has the model training files  
+User_Interface - Has the streamlit UI files
+Utility - Has the Utility files to run the streamlit application  
+DMV_App.py - Application Entry point file
