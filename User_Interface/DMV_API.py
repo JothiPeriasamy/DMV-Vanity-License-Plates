@@ -191,11 +191,11 @@ def Upload_Response_To_S3(vAR_result,vAR_request_id):
     with col2:
         with st.spinner('Saving API Response to AWS S3'):
             vAR_bucket_name = os.environ['BUCKET_NAME']
-            csv_buffer = StringIO()
-            vAR_result.to_csv(csv_buffer)
-            s3_resource = boto3.resource('s3',aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
+            vAR_csv_buffer = StringIO()
+            vAR_result.to_csv(vAR_csv_buffer)
+            vAR_s3_resource = boto3.resource('s3',aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
             vAR_utc_time = datetime.datetime.utcnow()
-            s3_resource.Object(vAR_bucket_name, 'batch/simpligov/new/ELP_Project_Response/'+vAR_utc_time.strftime('%Y%m%d')+'/ELP_Response_'+str(vAR_request_id)+'_'+vAR_utc_time.strftime('%H%M%S')+'.csv').put(Body=csv_buffer.getvalue())
+            vAR_s3_resource.Object(vAR_bucket_name, 'batch/simpligov/new/ELP_Project_Response/'+vAR_utc_time.strftime('%Y%m%d')+'/ELP_Response_'+str(vAR_request_id)+'_'+vAR_utc_time.strftime('%H%M%S')+'.csv').put(Body=vAR_csv_buffer.getvalue())
             st.write('')
             st.success('API Response successfully saved into S3 bucket')
         
