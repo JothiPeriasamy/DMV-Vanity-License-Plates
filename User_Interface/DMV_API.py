@@ -5,6 +5,9 @@ from google.cloud import storage,bigquery
 import datetime
 import pandas as pd
 from random import randint
+from io import StringIO 
+import boto3
+import os
 
 
 def API_Validation():
@@ -73,9 +76,14 @@ def API_Validation():
 
                 # save response into gcs
                 Upload_Response_GCS(vAR_output)
-
+                
+                vAR_request_id = randint(10001, 50000)
+                
                 # Bigquey table insert
-                Insert_Response_to_Bigquery(vAR_output_copy)
+                Insert_Response_to_Bigquery(vAR_output_copy,vAR_request_id)
+                
+                # save response into s3 bucket
+                Upload_Response_To_S3(vAR_output_copy,vAR_request_id)
 
                 col6, col7, col8 = st.columns([1.5,11,1.5])
                 with col7:
@@ -131,7 +139,7 @@ def Upload_Request_GCS(vAR_request):
             st.success('ELP Configuration Request successfully saved into cloud storage')
             return vAR_file_path
 
-def Insert_Response_to_Bigquery(vAR_df):
+def Insert_Response_to_Bigquery(vAR_df,vAR_request_id):
     vAR_df.rename(columns = {'REQUEST DATE':'REQUEST_DATE','ORDER DATE':'ORDER_DATE','ORDER ID':'ORDER_ID','DIRECT PROFANITY':'DIRECT_PROFANITY',
 'DIRECT PROFANITY MESSAGE':'DIRECT_PROFANITY_MESSAGE','RULE-BASED CLASSIFICATION':'RULE_BASED_CLASSIFICATION','RULE-BASED CLASSIFICATION MESSAGE':'RULE_BASED_CLASSIFICATION_MESSAGE','SEVERE TOXIC':'SEVERE_TOXIC','IDENTITY HATE':'IDENTITY_HATE','OVERALL PROBABILITY':'OVERALL_PROBABILITY'
 }, inplace = True)
@@ -141,7 +149,6 @@ def Insert_Response_to_Bigquery(vAR_df):
     updated_at = []
     updated_by = []
     df_length = len(vAR_df)
-    vAR_request_id = randint(10001, 50000)
     vAR_request_ids += df_length * [vAR_request_id]
     created_at += df_length * [datetime.datetime.utcnow()]
     created_by += df_length * ['Streamlit-User']
@@ -176,6 +183,21 @@ def Insert_Response_to_Bigquery(vAR_df):
             st.write('')
             st.write('')
             st.success('API Request&Response successfully saved into Bigquery table')
+            
+            
+def Upload_Response_To_S3(vAR_result,vAR_request_id):
+    
+    col1, col2, col3 = st.columns([1.5,11,1.5])
+    with col2:
+        with st.spinner('Saving API Response to AWS S3'):
+            vAR_bucket_name = os.environ['BUCKET_NAME']
+            csv_buffer = StringIO()
+            vAR_result.to_csv(csv_buffer)
+            s3_resource = boto3.resource('s3',aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
+            vAR_utc_time = datetime.datetime.utcnow()
+            s3_resource.Object(vAR_bucket_name, 'batch/simpligov/new/ELP_Project_Response/'+vAR_utc_time.strftime('%Y%m%d')+'/ELP_Response_'+str(vAR_request_id)+'_'+vAR_utc_time.strftime('%H%M%S')+'.csv').put(Body=csv_buffer.getvalue())
+            st.write('')
+            st.success('API Response successfully saved into S3 bucket')
         
 def Process_API_Response(vAR_api_response,vAR_request_date,vAR_order_date,vAR_configuration,vAR_order_id,vAR_vin,vAR_model):
     # vAR_api_response as dict
