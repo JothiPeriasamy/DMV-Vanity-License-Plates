@@ -14,6 +14,7 @@ def API_Validation():
 
     col1, col2, col23, col4,col5 = st.columns([1.5,5,1,5,1.5])
     vAR_output = pd.DataFrame()
+    vAR_batch_input = None
     vAR_api_request_url = 'https://dsai-dmv-elp-classification-ht2tn6zcxa-uc.a.run.app'
     with col2:
         st.write('')
@@ -22,23 +23,43 @@ def API_Validation():
         st.write('')
         st.write('')
         st.write('')
-        st.subheader('ELP Configuration File')
-        st.write('')
-        st.write('')
+        st.subheader('ELP Batch Request Source')
+        
         
     with col4:
         vAR_request_url = st.text_input('Request URL',vAR_api_request_url)
         st.write('')
-        vAR_batch_input = st.file_uploader('Upload Batch Configuration',type='csv')
-        st.write('')
-        # vAR_model = st.selectbox('',('Select Model','BERT','RNN'))
-    
+        # vAR_batch_input = st.file_uploader('Upload Batch Configuration',type='csv')
+        # st.write('')
+        vAR_source = st.selectbox('',('Select Request Source','Upload From Your System','S3'))
+        
+    col20, col21, col22, col23,col24 = st.columns([1.5,5,1,5,1.5])
+    if vAR_source=='Upload From Your System':
+        with col21:
+            st.write('')
+            st.write('')
+            st.write('')
+            st.subheader('ELP Configuration')
+        with col23:
+            st.write('')
+            vAR_batch_input = st.file_uploader('Upload Batch Configuration',type='csv')
+    elif vAR_source=='S3':
+        with col21:
+            st.write('')
+            st.write('')
+            st.write('')
+            st.subheader('ELP Configuration')
+            st.write('')
+        with col23:
+            st.write('')
+            vAR_batch_input = st.selectbox('',('s3://s3-us-west-2-elp/batch/simpligov/new/ELP_Project_Request/ELP_Batch_Input_Small.csv','s3://s3-us-west-2-elp/batch/simpligov/new/ELP_Project_Request/ELP_Batch_Input.csv','s3://s3-us-west-2-elp/batch/simpligov/new/ELP_Project_Request/ELP_Batch_Input2.csv'),help="select anyone")
     if vAR_batch_input is not None:
         vAR_headers = {'content-type': 'application/json'}
         vAR_batch_elp_configuration = pd.read_csv(vAR_batch_input)
         vAR_number_of_configuration = len(vAR_batch_elp_configuration)
         col6, col7, col8 = st.columns([1.5,11,1.5])
         with col7:
+            st.write('')
             with st.expander("Preview Uploaded ELP Configuration"):
                 st.dataframe(vAR_batch_elp_configuration)
         col9, col10, col11 = st.columns([1.5,11,1.5])
